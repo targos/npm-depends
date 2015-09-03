@@ -1,6 +1,6 @@
 {
   "name": "npm-depends",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "Find which packages on npm depend on another one",
   "main": "npm-depends.js",
   "bin": "./npm-depends.js",
