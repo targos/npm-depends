@@ -25,7 +25,8 @@ if (!semver.valid(version)) {
     process.exit(1);
 }
 
-var npmURL = 'https://skimdb.npmjs.com/registry/_design/app/_view/dependentVersions?startkey=%5B%22' + name + '%22%5D&endkey=%5B%22' + name + '!%22%5D&reduce=false';
+var encodedName = encodeURIComponent(name);
+var npmURL = 'https://skimdb.npmjs.com/registry/_design/app/_view/dependentVersions?startkey=%5B%22' + encodedName + '%22%5D&endkey=%5B%22' + encodedName + '%22%2C%7B%7D%5D&reduce=false';
 agent.get(npmURL)
     .set('Accept', 'application/json')
     .end(function (error, response) {
@@ -35,7 +36,7 @@ agent.get(npmURL)
         var packages = response.body.rows.filter(function (pack) {
             return semver.satisfies(version, pack.key[1]);
         }).map(function (pack) {
-            return pack.id;// + '\t' + pack.key[1];
+            return pack.id;
         });
         if (packages.length) {
             console.log(packages.join('\n'));
